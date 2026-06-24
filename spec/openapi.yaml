@@ -1,0 +1,54 @@
+openapi: 3.0.0
+
+info:
+  title: FlowPay Attendance API
+  version: 1.0.0
+
+paths:
+
+  /api/tickets:
+    post:
+      summary: Create ticket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+      responses:
+        "200":
+          description: Ticket created
+
+  /api/tickets/{id}/complete:
+    patch:
+      summary: Complete ticket
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ticket completed
+
+  /api/dashboard/summary:
+    get:
+      summary: System summary
+      responses:
+        "200":
+          description: Dashboard metrics
+          content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                totalQueued:
+                  type: number
+                totalActive:
+                  type: number
+                totalCompleted:
+                  type: number

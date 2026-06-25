@@ -88,6 +88,25 @@ describe('FlowPay (e2e)', () => {
       expect(res.body.status).toBe('ASSIGNED');
       expect(res.body.agentId).toEqual(expect.any(String));
     });
+
+    it('assigns ticket to the agent with the lowest load', async () => {
+      const subject = 'Problemas com cartão';
+
+      for (let i = 0; i < 3; i++) {
+        await request(app.getHttpServer())
+          .post('/api/tickets')
+          .send({ subject })
+          .expect(201);
+      }
+
+      const res = await request(app.getHttpServer())
+        .post('/api/tickets')
+        .send({ subject })
+        .expect(201);
+
+      expect(res.body.status).toBe('ASSIGNED');
+      expect(res.body.agentId).toBe('agent-2');
+    });
   });
 
   describe('POST /api/tickets — capacity limit', () => {

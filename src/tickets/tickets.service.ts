@@ -9,6 +9,7 @@ import {
   import { Ticket } from '../domain/ticket.entity';
   import { TicketStatus } from '../domain/ticket-status.enum';
   import { Team } from '../domain/team.enum';
+  import { EventsService } from 'src/events/events.service';
   
   @Injectable()
   export class TicketsService {
@@ -16,6 +17,7 @@ import {
       private readonly ticketsRepo: TicketsRepository,
       private readonly router: SubjectRouterService,
       private readonly agentsService: AgentsService,
+      private readonly eventsService: EventsService,
     ) {}
   
     create(subject: string): Ticket {
@@ -37,7 +39,9 @@ import {
         ticket = this.enqueue(ticket);
       }
   
-      return this.ticketsRepo.save(ticket);
+      const saved = this.ticketsRepo.save(ticket);
+      this.eventsService.emit({ type: 'ticket.created', payload: { ticketId: saved.id } });
+      return saved;
     }
   
     complete(ticketId: string): Ticket {
@@ -62,6 +66,7 @@ import {
         this.reindexQueue(ticket.team);
       }
     
+      this.eventsService.emit({ type: 'ticket.completed', payload: { ticketId } });
       return completed;
     }
   

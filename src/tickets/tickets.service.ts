@@ -46,14 +46,22 @@ import {
       if (ticket.status === TicketStatus.COMPLETED) {
         throw new BadRequestException('Ticket already completed');
       }
-  
+    
+      const wasAssigned = ticket.status === TicketStatus.ASSIGNED;
+    
       const completed = this.ticketsRepo.save({
         ...ticket,
         status: TicketStatus.COMPLETED,
+        agentId: null,
         queuePosition: null,
       });
-  
-      this.assignNextFromQueue(ticket.team);
+    
+      if (wasAssigned) {
+        this.assignNextFromQueue(ticket.team);
+      } else {
+        this.reindexQueue(ticket.team);
+      }
+    
       return completed;
     }
   

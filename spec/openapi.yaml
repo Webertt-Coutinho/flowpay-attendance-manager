@@ -4,10 +4,21 @@ info:
   title: FlowPay Attendance API
   version: 1.0.0
 
-paths:
+servers:
+  - url: http://localhost:3000/api
+    description: Local
 
-  /api/tickets:
+tags:
+  - name: Tickets
+    description: Ticket lifecycle
+  - name: Dashboard
+    description: System metrics
+
+paths:
+  /tickets:
     post:
+      tags: [Tickets]
+      operationId: createTicket
       summary: Create ticket
       requestBody:
         required: true
@@ -15,15 +26,19 @@ paths:
           application/json:
             schema:
               type: object
+              required: [subject]
               properties:
                 subject:
                   type: string
+                  example: Problemas com cartão
       responses:
-        "200":
+        "201":
           description: Ticket created
 
-  /api/tickets/{id}/complete:
+  /tickets/{id}/complete:
     patch:
+      tags: [Tickets]
+      operationId: completeTicket
       summary: Complete ticket
       parameters:
         - in: path
@@ -31,24 +46,27 @@ paths:
           required: true
           schema:
             type: string
+          example: "1"
       responses:
         "200":
           description: Ticket completed
 
-  /api/dashboard/summary:
+  /dashboard/summary:
     get:
+      tags: [Dashboard]
+      operationId: getDashboardSummary
       summary: System summary
       responses:
         "200":
           description: Dashboard metrics
           content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                totalQueued:
-                  type: number
-                totalActive:
-                  type: number
-                totalCompleted:
-                  type: number
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalQueued:
+                    type: number
+                  totalActive:
+                    type: number
+                  totalCompleted:
+                    type: number

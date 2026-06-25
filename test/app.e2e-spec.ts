@@ -221,6 +221,7 @@ describe('FlowPay (e2e)', () => {
         active: expect.any(Number),
         completed: expect.any(Number),
         waiting: expect.any(Array),
+        assigned: expect.any(Array),
       };
 
       expect(res.body.queuesByTeam).toMatchObject({

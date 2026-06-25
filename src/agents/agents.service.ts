@@ -7,6 +7,13 @@ import { Agent } from "src/domain/agent.entity";
 
 const MAX_ACTIVE_TICKETS = 3;
 
+export type AgentLoadSummary = {
+  id: string;
+  name: string;
+  load: number;
+  maxLoad: number;
+};
+
 @Injectable()
 export class AgentsService {
   constructor(private readonly agentsRepository: AgentsRepository) {}
@@ -17,6 +24,15 @@ export class AgentsService {
         t.agentId === agentId &&
         t.status === TicketStatus.ASSIGNED,
     ).length;
+  }
+
+  getTeamAgentLoads(team: Team, tickets: Ticket[]): AgentLoadSummary[] {
+    return this.agentsRepository.findByTeam(team).map((agent) => ({
+      id: agent.id,
+      name: agent.name,
+      load: this.countActiveTickets(agent.id, tickets),
+      maxLoad: MAX_ACTIVE_TICKETS,
+    }));
   }
 
   selectBestAvailableAgent(team: Team, tickets: Ticket[]): Agent | null {

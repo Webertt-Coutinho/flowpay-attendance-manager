@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "FlowPay Attendance API",
-    "description": "Import this collection for a flat folder layout (Tickets + Dashboard).",
+    "description": "Collection para testar a API FlowPay Attendance.\n\nFluxo sugerido:\n1. Create ticket (qualquer equipe)\n2. Get summary\n3. Complete ticket\n\nA variável ticketId é preenchida automaticamente após criar um ticket.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -19,7 +19,7 @@
       "name": "Tickets",
       "item": [
         {
-          "name": "Create ticket",
+          "name": "Create ticket — CARTOES",
           "request": {
             "method": "POST",
             "header": [
@@ -32,7 +32,72 @@
               "mode": "raw",
               "raw": "{\n  \"subject\": \"Problemas com cartão\"\n}"
             },
-            "url": "{{baseUrl}}/api/tickets"
+            "url": "{{baseUrl}}/api/tickets",
+            "description": "Roteia para a equipe CARTOES."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.id) pm.collectionVariables.set('ticketId', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create ticket — EMPRESTIMOS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Contratação de empréstimo\"\n}"
+            },
+            "url": "{{baseUrl}}/api/tickets",
+            "description": "Roteia para a equipe EMPRESTIMOS."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.id) pm.collectionVariables.set('ticketId', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create ticket — OUTROS",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Dúvida geral\"\n}"
+            },
+            "url": "{{baseUrl}}/api/tickets",
+            "description": "Qualquer assunto não mapeado roteia para OUTROS."
           },
           "event": [
             {
@@ -53,7 +118,8 @@
           "name": "Complete ticket",
           "request": {
             "method": "PATCH",
-            "url": "{{baseUrl}}/api/tickets/{{ticketId}}/complete"
+            "url": "{{baseUrl}}/api/tickets/{{ticketId}}/complete",
+            "description": "Conclui o ticket cujo id está em {{ticketId}}. Execute um Create ticket antes."
           }
         }
       ]
@@ -65,7 +131,8 @@
           "name": "Get summary",
           "request": {
             "method": "GET",
-            "url": "{{baseUrl}}/api/dashboard/summary"
+            "url": "{{baseUrl}}/api/dashboard/summary",
+            "description": "Retorna totalQueued, totalActive, totalCompleted e queuesByTeam."
           }
         }
       ]

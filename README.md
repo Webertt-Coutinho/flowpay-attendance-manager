@@ -382,19 +382,25 @@ Retorna os indicadores gerais e o estado atual de todas as equipes.
 
 ---
 
-## WebSocket
+## WebSocket (Socket.IO)
 
-```
-ws://localhost:3000/dashboard
-```
+A comunicação em tempo real usa **Socket.IO v4**, não WebSocket puro.
 
-Evento emitido:
+| | |
+|---|---|
+| **Conexão** | `http://localhost:3000/dashboard` |
+| **Protocolo** | Socket.IO v4 |
+| **Evento recebido** | `dashboard.summary` |
 
-```
-dashboard.summary
-```
+O servidor envia `dashboard.summary` ao conectar e sempre que um ticket é criado ou concluído.
 
-Sempre que ocorre alguma alteração nos atendimentos.
+### Teste manual
+
+1. Conecte via Postman (Socket.IO) ou abra o dashboard em [http://localhost:5173](http://localhost:5173)
+2. Execute **Create ticket** ou **Complete ticket** na collection REST (`postman/flowpay-attendance.postman_collection.json`)
+3. Observe o payload de `dashboard.summary` atualizar em tempo real
+
+> O endpoint `GET /dashboard/summary` retorna o mesmo dado sob demanda; o Socket.IO envia atualizações automaticamente.
 
 ---
 

@@ -4,6 +4,19 @@ Sistema desenvolvido para gerenciar a distribuição de tickets de atendimento e
 
 O projeto foi desenvolvido como solução para um desafio técnico Full Stack, contemplando uma API REST para gerenciamento dos atendimentos e um dashboard em tempo real para acompanhamento operacional.
 
+<p align="center">
+  <img src="client/assets/dashboard.png" alt="Dashboard em tempo real do FlowPay Attendance Manager" width="900" />
+</p>
+
+## Início rápido
+
+```bash
+npm install
+npm run dev
+```
+
+Instruções completas em [Como executar](#como-executar).
+
 ---
 
 # Índice
@@ -15,6 +28,7 @@ O projeto foi desenvolvido como solução para um desafio técnico Full Stack, c
 - [Arquitetura](#arquitetura)
 - [Fluxo da aplicação](#fluxo-da-aplicação)
 - [Regras de negócio](#regras-de-negócio)
+- [Pré-Requisitos](#pré-requisitos)
 - [Como executar](#como-executar)
 - [API](#api)
 - [Testes](#testes)
@@ -203,6 +217,24 @@ Quando um atendimento é concluído:
 Cada atendente pode possuir no máximo **3 atendimentos ativos** simultaneamente.
 
 Quando todos os atendentes de uma equipe atingem esse limite, novos tickets entram em uma fila FIFO.
+
+---
+
+# Pré-requisitos
+
+Antes de executar o projeto, certifique-se de ter instalado:
+
+| Requisito | Versão mínima | Observação |
+|-----------|---------------|------------|
+| [Node.js](https://nodejs.org/) | **22.12+** (recomendado) | Necessário para `npm run dev` (API + frontend) |
+| npm | **10+** | Incluído na instalação do Node.js |
+
+Verifique as versões instaladas:
+
+```bash
+node -v
+npm -v
+```
 
 ---
 

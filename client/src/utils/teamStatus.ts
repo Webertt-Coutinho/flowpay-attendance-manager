@@ -1,4 +1,4 @@
-import type { TeamSummary } from '../../types/dashboard';
+import type { TeamSummary } from '../types/dashboard';
 
 export type TeamStatus = 'overloaded' | 'queued' | 'available' | 'full';
 

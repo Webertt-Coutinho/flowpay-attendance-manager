@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "postinstall": "npm install --prefix client",
+    "postinstall": "node -e \"if(process.env.SKIP_CLIENT_POSTINSTALL)process.exit(0);require('child_process').execSync('npm install',{cwd:'client',stdio:'inherit',env:Object.assign({},process.env,{SKIP_CLIENT_POSTINSTALL:'1'})})\"",
     "dev": "concurrently -n api,web -c blue,green \"npm run start:dev\" \"npm run dev:web\"",
     "dev:web": "npm run dev --prefix client",
     "start:dev": "nest start --watch --preserveWatchOutput",

@@ -1,6 +1,6 @@
 import type { TeamSummary } from '../../types/dashboard';
 import { AgentLoadList } from './AgentLoadList';
-import { getTeamStatus, getTeamStatusStyle } from './teamStatus';
+import { getTeamStatus, getTeamStatusStyle } from '../../utils/teamStatus';
 
 type TeamCardProps = {
   title: string;
